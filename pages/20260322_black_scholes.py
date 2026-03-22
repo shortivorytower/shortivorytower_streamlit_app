@@ -35,8 +35,6 @@ st.write("### Interactive Option Pricing")
 st.markdown("""
 ## Introduction
 
-This is a test for using interactive methods to keep records.
-
 The Black-Scholes formula assumes stock prices follow a 
 **Geometric Brownian Motion (GBM)**.
 
@@ -162,33 +160,24 @@ st.plotly_chart(fig, use_container_width=True)
 # ==========================================
 st.markdown("---")
 
-col_info1, col_info2 = st.columns([1, 2])
+st.write("## Discussion")
+st.write("Leave a comment below (requires GitHub account).")
 
-with col_info1:
-    st.write("#### Analytics")
-    st.markdown(
-        "![Views](https://moe-counter.glitch.me/get/@your_github_username_quant_blog?theme=rule34)"
-    )
-
-with col_info2:
-    st.write("## Discussion")
-    st.write("Leave a comment below (requires GitHub account).")
-
-    giscus_html = """
-        <script src="https://giscus.app/client.js"
-                data-repo="shortivorytower/shortivorytower_streamlit_app"
-                data-repo-id="R_kgDORtjWOw"
-                data-category="General"
-                data-category-id="DIC_kwDORtjWO84C5A0a"
-                data-mapping="pathname"
-                data-strict="0"
-                data-reactions-enabled="1"
-                data-emit-metadata="0"
-                data-input-position="bottom"
-                data-theme="preferred_color_scheme"
-                data-lang="zh-HK"
-                crossorigin="anonymous"
-                async>
-        </script>
-    """
-    components.html(giscus_html, height=600, scrolling=True)
+giscus_html = """
+    <script src="https://giscus.app/client.js"
+            data-repo="shortivorytower/shortivorytower_streamlit_app"
+            data-repo-id="R_kgDORtjWOw"
+            data-category="General"
+            data-category-id="DIC_kwDORtjWO84C5A0a"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="preferred_color_scheme"
+            data-lang="zh-HK"
+            crossorigin="anonymous"
+            async>
+    </script>
+"""
+components.html(giscus_html, height=600, scrolling=True)

@@ -31,7 +31,7 @@ def black_scholes_call(S0, K, T, r, sigma):
 st.title("只係試下嘢：Black-Scholes ")
 st.write("### ... whatever... testing only")
 st.markdown("""
-試吓用 Interactive 嘅方法留低啲紀錄。普通市民識嘅係『分散投資』，
+試吓用 Interactive 方式留低啲紀錄。
 但係數學話畀我哋聽『風險點樣定價』。
 
 今日我哋嚟看最經典嘅 Black-Scholes Formula。它假設股票價格服從

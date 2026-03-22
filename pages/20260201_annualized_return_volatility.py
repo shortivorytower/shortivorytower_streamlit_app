@@ -54,7 +54,7 @@ def annualized_volatility(daily_returns):
 # UI - Title
 # ==========================================
 st.title("How to Estimate Annualized Return and Volatility")
-st.write("### Using Single Stock Daily Close Prices")
+st.write("### (DRAFT TESTING Streamlit capabilities only) Using Single Stock Daily Close Prices")
 
 # ==========================================
 # Article: What is a Return?

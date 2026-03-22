@@ -7,6 +7,7 @@ import streamlit.components.v1 as components
 # --- 頁面設定 ---
 st.set_page_config(page_title="Quant Finance Track Record", layout="wide")
 
+
 # ==========================================
 # 核心數學邏輯: Black-Scholes Call Formula
 # ==========================================
@@ -16,14 +17,15 @@ def black_scholes_call(S0, K, T, r, sigma):
     """
     if T == 0:
         return max(0, S0 - K)
-    
+
     # 計算 d1 和 d2
-    d1 = (np.log(S0 / K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
+    d1 = (np.log(S0 / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * np.sqrt(T))
     d2 = d1 - sigma * np.sqrt(T)
-    
+
     # 計算 Call 價格
     call_price = (S0 * norm.cdf(d1)) - (K * np.exp(-r * T) * norm.cdf(d2))
     return call_price, d1, d2
+
 
 # ==========================================
 # UI 介面 - 標題與文章內容
@@ -90,7 +92,6 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-
 # ==========================================
 # 高級功能：瀏覽統計 與 GitHub 留言
 # ==========================================
@@ -98,7 +99,7 @@ st.markdown("---")
 col_info1, col_info2 = st.columns([1, 2])
 
 with col_info1:
-    st.write("#### 讀者足跡")
+    st.write("#### analytics")
     # 這裡加入 Google Analytics (GA) 的 HTML Snippet。
     # 請替換成你自己的 GA Tracking ID。
     ga_html = """
@@ -115,27 +116,27 @@ with col_info1:
 
 with col_info2:
     st.write("#### 公開討論 (GitHub Discussions)")
-    st.write("如果有數學推導錯誤，或者有咩想傾，歡迎留言（需 GitHub 帳號）。")
-    
+    st.write("whatever 留言（需 GitHub 帳號）。")
+
     # ==========================================
     # Giscus 留言嵌入 (把下面的內容替換成你從 giscus.app 獲得的 HTML)
     # ==========================================
     giscus_html = """
-    <script src="https://giscus.app/client.js"
-            data-repo="your_github_username/quant-math-notes"
-            data-repo-id="YOUR_REPO_ID"
-            data-category="Announcements"
-            data-category-id="YOUR_CATEGORY_ID"
-            data-mapping="pathname"
-            data-strict="0"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="light"
-            data-lang="zh-TW"
-            crossorigin="anonymous"
-            async>
-    </script>
+        <script src="https://giscus.app/client.js"
+                data-repo="shortivorytower/shortivorytower_streamlit_app"
+                data-repo-id="R_kgDORtjWOw"
+                data-category="General"
+                data-category-id="DIC_kwDORtjWO84C5A0a"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="preferred_color_scheme"
+                data-lang="zh-HK"
+                crossorigin="anonymous"
+                async>
+        </script>
     """
     # 使用 streamlit components 嵌入 Giscus
     components.html(giscus_html, height=600, scrolling=True)

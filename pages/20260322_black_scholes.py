@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 from scipy.stats import norm
 import plotly.graph_objects as go
-import streamlit.components.v1 as components
 
 
 # ==========================================
@@ -163,21 +162,23 @@ st.markdown("---")
 st.write("## Discussion")
 st.write("Leave a comment below (requires GitHub account).")
 
-giscus_html = """
-    <script src="https://giscus.app/client.js"
-            data-repo="shortivorytower/shortivorytower_streamlit_app"
-            data-repo-id="R_kgDORtjWOw"
-            data-category="General"
-            data-category-id="DIC_kwDORtjWO84C5A0a"
-            data-mapping="pathname"
-            data-strict="0"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="preferred_color_scheme"
-            data-lang="zh-HK"
-            crossorigin="anonymous"
-            async>
-    </script>
+# Using st.html with JavaScript enabled for Giscus to work properly
+giscus_script = """
+<script src="https://giscus.app/client.js"
+        data-repo="shortivorytower/shortivorytower_streamlit_app"
+        data-repo-id="R_kgDORtjWOw"
+        data-category="General"
+        data-category-id="DIC_kwDORtjWO84C5A0a"
+        data-mapping="specific"
+        data-term="black_scholes"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-HK"
+        crossorigin="anonymous"
+        async>
+</script>
 """
-components.html(giscus_html, height=600, scrolling=True)
+st.html(giscus_script, unsafe_allow_javascript=True)

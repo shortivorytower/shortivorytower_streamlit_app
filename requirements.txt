@@ -38,7 +38,7 @@ narwhals==2.18.0
     #   plotly
 numpy==2.4.3
     # via
-    #   blog-app1 (pyproject.toml)
+    #   streamlit-app (pyproject.toml)
     #   pandas
     #   pydeck
     #   scipy
@@ -53,7 +53,7 @@ pandas==2.3.3
 pillow==12.1.1
     # via streamlit
 plotly==6.6.0
-    # via blog-app1 (pyproject.toml)
+    # via streamlit-app (pyproject.toml)
 protobuf==6.33.6
     # via streamlit
 pyarrow==23.0.1
@@ -75,13 +75,13 @@ rpds-py==0.30.0
     #   jsonschema
     #   referencing
 scipy==1.17.1
-    # via blog-app1 (pyproject.toml)
+    # via streamlit-app (pyproject.toml)
 six==1.17.0
     # via python-dateutil
 smmap==5.0.3
     # via gitdb
 streamlit==1.55.0
-    # via blog-app1 (pyproject.toml)
+    # via streamlit-app (pyproject.toml)
 tenacity==9.1.4
     # via streamlit
 toml==0.10.2

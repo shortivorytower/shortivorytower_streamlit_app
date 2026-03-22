@@ -66,21 +66,14 @@ Adjust the model parameters below to see how the call option price changes.
 """)
 
 # ==========================================
-# Inline Parameters (moved from sidebar)
+# Sidebar Parameters
 # ==========================================
-st.markdown("#### Model Parameters")
-param_col1, param_col2, param_col3, param_col4, param_col5 = st.columns(5)
-
-with param_col1:
-    input_S0 = st.slider("Stock Price (S0)", 50.0, 150.0, 100.0)
-with param_col2:
-    input_K = st.slider("Strike Price (K)", 50.0, 150.0, 105.0)
-with param_col3:
-    input_T = st.slider("Time to Expiry (T, years)", 0.01, 5.0, 1.0)
-with param_col4:
-    input_r = st.slider("Risk-free Rate (r, %)", 0.0, 15.0, 5.0) / 100.0
-with param_col5:
-    input_sigma = st.slider("Volatility (sigma, %)", 5.0, 100.0, 30.0) / 100.0
+st.sidebar.header("Model Parameters")
+input_S0 = st.sidebar.slider("Stock Price (S0)", 50.0, 150.0, 100.0)
+input_K = st.sidebar.slider("Strike Price (K)", 50.0, 150.0, 105.0)
+input_T = st.sidebar.slider("Time to Expiry (T, years)", 0.01, 5.0, 1.0)
+input_r = st.sidebar.slider("Risk-free Rate (r, %)", 0.0, 15.0, 5.0) / 100.0
+input_sigma = st.sidebar.slider("Volatility (sigma, %)", 5.0, 100.0, 30.0) / 100.0
 
 # Calculate result
 call_price, d1, d2 = black_scholes_call(

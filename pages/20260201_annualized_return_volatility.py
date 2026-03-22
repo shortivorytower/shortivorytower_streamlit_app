@@ -147,21 +147,14 @@ Adjust the simulation parameters below to see how annualized return and volatili
 """)
 
 # ==========================================
-# Inline Parameters (moved from sidebar)
+# Sidebar Parameters
 # ==========================================
-st.markdown("#### Simulation Parameters")
-param_col1, param_col2, param_col3, param_col4, param_col5 = st.columns(5)
-
-with param_col1:
-    sim_S0 = st.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
-with param_col2:
-    sim_mu = st.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
-with param_col3:
-    sim_sigma = st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
-with param_col4:
-    sim_days = st.slider("Trading Days", 30, 504, 252)
-with param_col5:
-    sim_seed = st.number_input("Random Seed", value=42, min_value=0)
+st.sidebar.header("Simulation Parameters")
+sim_S0 = st.sidebar.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
+sim_mu = st.sidebar.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
+sim_sigma = st.sidebar.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
+sim_days = st.sidebar.slider("Trading Days", 30, 504, 252)
+sim_seed = st.sidebar.number_input("Random Seed", value=42, min_value=0)
 
 # Generate sample data
 prices = generate_gbm_prices(sim_S0, sim_mu, sim_sigma, sim_days, seed=int(sim_seed))

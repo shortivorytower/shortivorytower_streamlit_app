@@ -47,7 +47,7 @@ st.latex(r"d_1 = \frac{\ln(S_0/K) + (r + \sigma^2/2)T}{\sigma\sqrt{T}}, \quad d_
 st.markdown("""
 <br>
 
-## 互動式計算：你自己調校參數
+## 互動式計算：自己調校參數
 
 在左側或上方調整參數，睇吓 Call Option 價格點樣變。
 

@@ -4,9 +4,6 @@ from scipy.stats import norm
 import plotly.graph_objects as go
 import streamlit.components.v1 as components
 
-# --- Page Config ---
-st.set_page_config(page_title="2026-03-22 Black-Scholes", layout="wide")
-
 
 # ==========================================
 # Core Math: Black-Scholes Call Formula

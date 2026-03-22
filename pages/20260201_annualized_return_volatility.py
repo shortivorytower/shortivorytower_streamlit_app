@@ -5,10 +5,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit.components.v1 as components
 
-# --- Page Config ---
-st.set_page_config(page_title="2026-02-01 Annualized Return Volatility", layout="wide")
-
-
 # ==========================================
 # Helper Functions
 # ==========================================

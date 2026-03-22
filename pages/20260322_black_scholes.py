@@ -158,27 +158,9 @@ st.plotly_chart(fig, use_container_width=True)
 # Discussion
 # ==========================================
 st.markdown("---")
-
 st.write("## Discussion")
-st.write("Leave a comment below (requires GitHub account).")
+st.markdown("""
+Have questions or comments? Join the conversation on GitHub Discussions.
 
-# Using st.html with JavaScript enabled for Giscus to work properly
-giscus_script = """
-<script src="https://giscus.app/client.js"
-        data-repo="shortivorytower/shortivorytower_streamlit_app"
-        data-repo-id="R_kgDORtjWOw"
-        data-category="General"
-        data-category-id="DIC_kwDORtjWO84C5A0a"
-        data-mapping="specific"
-        data-term="black_scholes"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="zh-HK"
-        crossorigin="anonymous"
-        async>
-</script>
-"""
-st.html(giscus_script, unsafe_allow_javascript=True)
+[Open Discussion on GitHub](https://github.com/shortivorytower/shortivorytower_streamlit_app/discussions)
+""")

@@ -28,7 +28,7 @@ def black_scholes_call(S0, K, T, r, sigma):
 # ==========================================
 # UI 介面 - 標題與文章內容
 # ==========================================
-st.title("a bunch of Bullshit：Black-Scholes ")
+st.title("只係試下嘢：Black-Scholes ")
 st.write("### ... whatever... testing only")
 st.markdown("""
 試吓用 Interactive 嘅方法留低啲紀錄。普通市民識嘅係『分散投資』，

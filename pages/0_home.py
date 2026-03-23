@@ -1,9 +1,25 @@
+import base64
 import streamlit as st
 
 # ==========================================
 # Home Page
 # ==========================================
-st.title("Short Ivory Tower")
+
+# Encode profile image as base64 for inline HTML
+with open("assets/img/profile.png", "rb") as f:
+    profile_b64 = base64.b64encode(f.read()).decode()
+
+st.markdown(
+    f"""
+    <div style="display: flex; align-items: center;">
+        <h1 style="margin: 0;">Short Ivory Tower</h1>
+        <img src="data:image/png;base64,{profile_b64}"
+             style="width: 50px; height: 50px; border-radius: 50%; margin-left: 12px; object-fit: cover;">
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.markdown("**一個數學用家 -- 活在象牙塔入面，但係個塔都幾矮。**")
 
 st.markdown("---")
@@ -40,4 +56,3 @@ st.page_link(
     label="2026-02-01: (求其試下嘢) How to Estimate Annualized Return and Volatility",
     icon="📊",
 )
-

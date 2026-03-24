@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from streamlit_js_eval import streamlit_js_eval
 
 # ==========================================
 # Helper Functions
@@ -54,7 +55,9 @@ def annualized_volatility(daily_returns):
 # UI - Title
 # ==========================================
 st.title("How to Estimate Annualized Return and Volatility")
-st.write("### (DRAFT TESTING Streamlit capabilities only) Using Single Stock Daily Close Prices")
+st.write(
+    "### (DRAFT TESTING Streamlit capabilities only) Using Single Stock Daily Close Prices"
+)
 
 # ==========================================
 # Article: What is a Return?
@@ -147,14 +150,29 @@ Adjust the simulation parameters below to see how annualized return and volatili
 """)
 
 # ==========================================
-# Sidebar Parameters
+# Simulation Parameters
 # ==========================================
-st.sidebar.header("Simulation Parameters")
-sim_S0 = st.sidebar.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
-sim_mu = st.sidebar.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
-sim_sigma = st.sidebar.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
-sim_days = st.sidebar.slider("Trading Days", 30, 504, 252)
-sim_seed = st.sidebar.number_input("Random Seed", value=42, min_value=0)
+screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
+
+with st.expander("Simulation Parameters", expanded=True):
+    if screen_width and screen_width > 768:  # Desktop - use 3 columns
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            sim_S0 = st.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
+            sim_mu = st.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
+        with col2:
+            sim_sigma = (
+                st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
+            )
+            sim_days = st.slider("Trading Days", 30, 504, 252)
+        with col3:
+            sim_seed = st.number_input("Random Seed", value=42, min_value=0)
+    else:  # Mobile or width not yet detected - vertical stack
+        sim_S0 = st.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
+        sim_mu = st.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
+        sim_sigma = st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
+        sim_days = st.slider("Trading Days", 30, 504, 252)
+        sim_seed = st.number_input("Random Seed", value=42, min_value=0)
 
 # Generate sample data
 prices = generate_gbm_prices(sim_S0, sim_mu, sim_sigma, sim_days, seed=int(sim_seed))

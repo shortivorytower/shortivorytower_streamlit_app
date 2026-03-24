@@ -55,6 +55,7 @@ def annualized_volatility(daily_returns):
 # UI - Title
 # ==========================================
 st.title("How to Estimate Annualized Return and Volatility")
+
 st.write(
     "### (DRAFT TESTING Streamlit capabilities only) Using Single Stock Daily Close Prices"
 )
@@ -147,11 +148,13 @@ For typical stock volatilities (< 50% annual), the difference is small. Log retu
 ## Interactive Example
 
 Adjust the simulation parameters below to see how annualized return and volatility change.
+
 """)
 
 # ==========================================
 # Simulation Parameters
 # ==========================================
+
 screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
 
 with st.expander("Simulation Parameters", expanded=True):

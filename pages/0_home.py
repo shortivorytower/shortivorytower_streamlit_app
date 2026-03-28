@@ -34,13 +34,13 @@ st.markdown("""
 
 其實而家寫乜都勁唔過 AI，何況如果想睇真人 content 大家都即食睇片，咁仲寫嚟做乜？
 
-呢個 blog 有兩個目的：
+呢個 blog 有幾個目的：
 
-1. 純粹係我自己嘅紀錄，寫低一路以嚟技術上嘅 know-how。
+1. 主要係我自己嘅紀錄，寫低一路以嚟技術上嘅 know-how，又或者一啲我覺得有趣嘅嘢。
 
-1. 畀少少希望一啲同我以前一樣、數學OK 但普通出身嘅學生 —— 你嘅出路唔一定只係做醫生或律師，或者跟住個hype去搞 AI。你apply數學喺金融上面，都可能搵到食。
+1. 畀少少希望一啲同我以前一樣、數學OK嘅中學生 —— 你嘅出路唔一定只係做醫生或律師，或者跟住個hype去搞 AI。Apply數學喺金融上面，都可能搵到食。
 
-香港人梗係用廣東話啦，我係專登用廣東話寫嘅！其他人睇唔睇得明我完全唔care。
+香港人梗係用廣東話啦，我係專登用廣東話寫嘅！其他人睇唔睇得明其實我唔care。
 
 個repo啲嘢如果覺得啱用嘅可以隨便抄，不過自己check清楚有冇bug或計錯數。如發現有錯話聲我聽，唔該！
 
@@ -53,8 +53,4 @@ st.markdown("---")
 # ==========================================
 st.markdown("## Posts")
 
-st.page_link(
-    "pages/20260201_annualized_return_volatility.py",
-    label="2026-02-01: (求其試下嘢) How to Estimate Annualized Return and Volatility",
-    icon="📊",
-)
+st.page_link("pages/20260328_basic_mean_and_sd.py",label="2026-03-28: 一啲基本統計學常識",icon="📊")

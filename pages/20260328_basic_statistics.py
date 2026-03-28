@@ -139,15 +139,38 @@ with st.expander("Data Points"):
 
 st.markdown(r"""
 
-通常都會計一下四個Moments (唔知中文係乜)：
+如果用數字嚟描述一下啲Data，可以計以下四個Sample Moments：
 
-- Mean 
-
+- Mean
+    - 平均Daily Return有幾多
 - Variance
-
+    - 平均Daily Return同實際Data Point差幾遠，可以理解成「一般風險」。
 - Skewness
-
+    - 啲Daily Return 會唔會係嬴粒糖輸間廠咁(Negative Skew)？
+    - 定係好似買六合彩咁九成九都嬴唔到，不過買好多好多次可能會嬴舖勁嘅(Positive Skew)？
 - Kurtosis
+    - 啲Data係唔係極端分散，可以理解成為「極端事件」多唔多發生。
 
+每隻股票Raw Data有252個Day Close Price $$ P_t $$，所以一共有251個Return $$ R_t $$，$$ n = 251 $$ 
+
+
+""")
+
+st.latex(r"""
+\begin{align*}
+\textsf{Sample Mean } \bar{R} &= \frac{\sum_{i=1}^{n} R_i}{n} \\ 
+
+\textsf{Sample Variance } s^2 &= \frac{\sum_{i=1}^{n} (R_i - \bar{R})^2}{n-1} \\
+
+\textsf{Sample Skewness } G_1 &= \frac{n}{(n-1)(n-2)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^3 \\
+
+\textsf{Sample Kurtosis } G_2 &= \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^4 - \frac{3(n-1)^2}{(n-2)(n-3)}
+
+\end{align*}
+""")
+
+st.markdown(r"""
+
+…唉……啲stat嘅formula 真係樣衰到一個點……… 
 
 """)

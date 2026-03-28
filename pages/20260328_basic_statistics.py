@@ -11,23 +11,23 @@ with open("load-mathjax.js", "r") as f:
     st.components.v1.html(f"<script>{js}</script>", height=0)
 
 st.markdown(r"""
-我諗左好耐究竟第一篇寫乜好，最後都揀咗一啲好basic嘅統計學嘢，因為我覺得呢啲真係fundamental。
+我諗左好耐究竟第一篇寫乜好，最後都揀咗一啲好basic統計學嘅嘢，因為我覺得呢啲真係fundamental。
 
-關於統計學，我仲記得以前中學啲老師教我哋計Mean、Standard Deviation (SD) 呢啲嘢，
+關於統計學，我仲記得以前我個中學老師教我哋計下Mean、Standard Deviation (SD) 呢啲嘢，
 
-- 例如：度下全班男仔身高幾多cm，跟住計下Mean；又計下SD
+- 例如：度下全班男仔身高幾多cm，跟住計下Mean；又計下SD咁。
 
-咁跟住呢？？ 都係交完功課考試合格就算數，冇講過有乜用同埋點解要計呢啲嘢。又或者可能大家都覺得度高磅重好實用、大家都好有興趣掛？
+咁跟住呢？？ 都係交完功課考試合格就算數，完全冇講過計嚟做乜。或者我個老師真係覺得度高磅重好實用、好有趣掛？
 
 #### 用家見解
 
-統計學真係一門好Q深嘅嘢嚟，不過high level 我都想講下少少用家嘅見解，我認為
+統計學真係一門好Q深奧嘅嘢嚟，不過high level 我都想講下少少用家嘅見解，我認為
 
-- 統計學係用數學嚟描述一啲Blackbox，一啲我地永遠都唔知絕對真實樣子係點嘅嘢。
+- 統計學係用數學嚟Model一個Blackbox，而呢個Blackbox我地永遠都唔知裏面係點樣嘅。
 
-- 一般做法係搵啲Data Point整個Model出嚟，推測下關於個Blackbox嘅特點。
+    - 一般做法係搵啲Data Point整個Model出嚟，推測下關於個Blackbox嘅特點。
 
-- 至於推測有幾勁，就睇下個Model同Data Quality有幾好喇。
+    - 至於推測有幾勁，咁就睇下個Model同Data Quality有幾好喇。
 """)
 
 st.markdown(r"""
@@ -97,13 +97,12 @@ fig2.add_trace(
 fig2.update_layout(height=400, title_text=r"$\textsf{Stock 1 and Stock 2 Daily Returns } R_t$", showlegend=False)
 
 # Display the Combined Plot
-st.plotly_chart(fig1, width="content", config={'includeMathJax': True})
+st.plotly_chart(fig1, width="content")
 
 st.markdown(r"""
 
-好多時喺Finance嘅世界係比較少直接用Price去計啲Statistics，主要原因係因為下一個價位$$ P_{t+1} $$ 係heavily dependent on 而家係價位 $$ P_t $$
-
-例如今日收市係50蚊，咁聽日隻嘢個收市幾乎冇可能係5蚊或500蚊，多數都係四十幾至五十幾之間。要用統計去handle個Price就要用Time Series Analysis，不過唔好扯到太遠喇。 
+好多時喺Finance嘅世界係比較少直接用Price去計啲Statistics，主要原因係做唔到股票之間嘅比較。
+例如一隻五蚊升咗五毫，另一隻百幾蚊升咗十蚊，個Price唔喺同一個scale係冇得比較。但係個Return (升咗幾多percent)就可以較喇。
 
 首先我哋要由Daily Close Price 轉做 Daily Return，而Return又有分Simple Return(又稱Arithmetic Return)同Log Return：
 
@@ -124,8 +123,10 @@ st.markdown(r"""
 """)
 
 
-st.plotly_chart(fig2, width="content", config={'includeMathJax': True})
+#st.plotly_chart(fig2, width="content", config={'includeMathJax': True})
+st.plotly_chart(fig2, width="content")
 
-with st.expander("Raw Data"):
+with st.expander("Data Points"):
     display_df = stock1.merge(stock2, on="trade_date", how="inner", suffixes=["_stock1", "_stock2"])
-    st.dataframe(display_df, width='stretch')
+    st.dataframe(display_df, width="stretch")
+

@@ -32,7 +32,6 @@ st.markdown(r"""
 #### 一般用法
 
 其實喺Finance上面最Common嘅用法，就係用嚟Measure下啲股票每日嘅回報率Daily Return特性。
-當然就算識哂呢啲都唔代表會嬴錢，不過如果連呢啲基本嘢都唔識咁就實在太廢了。
 
 以下有兩隻股票嘅Daily Close Price (加左noise)，呢啲係Raw Data Point。
 

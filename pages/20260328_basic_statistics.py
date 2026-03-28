@@ -135,4 +135,15 @@ with st.expander("Data Points"):
 
 st.markdown(r"""
 
+通常都會計一下四個Moments (唔知中文係乜)：
+
+- Mean 
+
+- Variance
+
+- Skewness
+
+- Kurtosis
+
+
 """)

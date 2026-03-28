@@ -35,7 +35,9 @@ st.markdown(r"""
 
 其實喺Finance上面最Common嘅用法，就係用嚟Measure下啲股票每日嘅回報率Daily Return特性。
 
-以下有兩隻股票嘅Daily Close Price ($$ P_t $$ : Price At Time $$ t $$)，呢啲係Raw Data Point。
+呢樣嘢Exactly就係上面講嘅Blackbox：我地可以估下嚟緊回報有幾多，有個大槪嘅Idea，但係究竟入面詳細每一樣嘢係點樣運作其實係冇可能知道哂。
+
+作為Raw Data Point， 以下有兩隻股票嘅Daily Close Price ($$ P_t $$ : Price At Time $$ t $$)：
 
 """)
 
@@ -118,15 +120,17 @@ st.latex(r"""
 
 st.markdown(r"""
 
-都係用住Simple Return $$ R_t $$先：
+用住Simple Return $$ R_t $$先，唔理Log Return住：
 
 """)
 
 
-#st.plotly_chart(fig2, width="content", config={'includeMathJax': True})
 st.plotly_chart(fig2, width="content")
 
 with st.expander("Data Points"):
     display_df = stock1.merge(stock2, on="trade_date", how="inner", suffixes=["_stock1", "_stock2"])
     st.dataframe(display_df, width="stretch")
 
+st.markdown(r"""
+
+""")

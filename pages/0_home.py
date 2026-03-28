@@ -53,4 +53,4 @@ st.markdown("---")
 # ==========================================
 st.markdown("## Posts")
 
-st.page_link("pages/20260328_basic_mean_and_sd.py",label="2026-03-28: 一啲基本統計學常識",icon="📊")
+st.page_link("pages/20260328_basic_statistics.py",label="2026-03-28: 基本統計學常識",icon="📊")

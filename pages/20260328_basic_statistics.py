@@ -1,3 +1,5 @@
+from sys import prefix
+
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -33,7 +35,7 @@ st.markdown(r"""
 
 其實喺Finance上面最Common嘅用法，就係用嚟Measure下啲股票每日嘅回報率Daily Return特性。
 
-以下有兩隻股票嘅Daily Close Price (加左noise)，呢啲係Raw Data Point。
+以下有兩隻股票嘅Daily Close Price ($$ P_t $$ : Price At Time $$ t $$)，呢啲係Raw Data Point。
 
 """)
 
@@ -92,7 +94,7 @@ fig2.add_trace(
     row=1,
     col=2,
 )
-fig2.update_layout(height=400, title_text=r"$\textsf{Stock 1 and Stock 2 Daily Returns } r_t$", showlegend=False)
+fig2.update_layout(height=400, title_text=r"$\textsf{Stock 1 and Stock 2 Daily Returns } R_t$", showlegend=False)
 
 # Display the Combined Plot
 st.plotly_chart(fig1, width="content", config={'includeMathJax': True})
@@ -103,7 +105,27 @@ st.markdown(r"""
 
 例如今日收市係50蚊，咁聽日隻嘢個收市幾乎冇可能係5蚊或500蚊，多數都係四十幾至五十幾之間。要用統計去handle個Price就要用Time Series Analysis，不過唔好扯到太遠喇。 
 
+首先我哋要由Daily Close Price 轉做 Daily Return，而Return又有分Simple Return(又稱Arithmetic Return)同Log Return：
 
 """)
 
+st.latex(r"""
+\textsf{Simple Return } R_t = \frac{P_t-P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}}-1
+""")
+
+st.latex(r"""
+\textsf{Log Return } r_t = \ln{\frac{P_t}{P_{t-1}}}
+""")
+
+st.markdown(r"""
+
+都係用住Simple Return $$ R_t $$先：
+
+""")
+
+
 st.plotly_chart(fig2, width="content", config={'includeMathJax': True})
+
+with st.expander("Raw Data"):
+    display_df = stock1.merge(stock2, on="trade_date", how="inner", suffixes=["_stock1", "_stock2"])
+    st.dataframe(display_df, width='stretch')

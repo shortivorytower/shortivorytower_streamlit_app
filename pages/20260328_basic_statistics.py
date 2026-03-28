@@ -110,7 +110,7 @@ st.markdown(r"""
 
 首先我哋要由Daily Close Price 轉做 Simple Daily Return (又稱Arithmetic Return)：
 
-(Sidetrack少少，仲有Geometric Return同Log Return…)
+(Sidetrack：仲有其他相關嘅嘢例如Geometric Return同Log Return…)
 
 """)
 

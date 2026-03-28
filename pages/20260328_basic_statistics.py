@@ -6,9 +6,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 st.title("基本統計學常識")
-with open("load-mathjax.js", "r") as f:
-    js = f.read()
-    st.components.v1.html(f"<script>{js}</script>", height=0)
+
+#with open("load-mathjax.js", "r") as f:
+#    js = f.read()
+#    st.components.v1.html(f"<script>{js}</script>", height=0)
 
 st.markdown(r"""
 我諗左好耐究竟第一篇寫乜好，最後都揀咗一啲好basic統計學嘅嘢，因為我覺得呢啲真係fundamental。
@@ -74,7 +75,7 @@ fig1.add_trace(
 )
 
 # Update Layout for Better Appearance
-fig1.update_layout(height=400, title_text=r"$\textsf{Stock 1 and Stock 2 Daily Close Prices } P_t$", showlegend=False)
+fig1.update_layout(height=300, title_text=r"Stock 1 and Stock 2 Daily Close Prices", showlegend=False)
 
 fig2 = make_subplots(
     rows=1,
@@ -96,7 +97,7 @@ fig2.add_trace(
     row=1,
     col=2,
 )
-fig2.update_layout(height=400, title_text=r"$\textsf{Stock 1 and Stock 2 Daily Returns } R_t$", showlegend=False)
+fig2.update_layout(height=300, title_text=r"Stock 1 and Stock 2 Daily Returns", showlegend=False)
 
 # Display the Combined Plot
 st.plotly_chart(fig1, width="content")

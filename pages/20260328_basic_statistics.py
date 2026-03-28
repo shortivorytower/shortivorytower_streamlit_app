@@ -113,7 +113,10 @@ st.markdown(r"""
 """)
 
 st.latex(r"""
-\textsf{Simple Return } R_t = \frac{P_t-P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}}-1
+\begin{align*}
+\textsf{Simple Return } R_t &= \frac{P_t-P_{t-1}}{P_{t-1}} \\
+                            &= \frac{P_t}{P_{t-1}}-1
+\end{align*}
 """)
 
 

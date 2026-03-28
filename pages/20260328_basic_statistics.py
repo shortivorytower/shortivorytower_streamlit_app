@@ -75,7 +75,7 @@ fig1.add_trace(
 )
 
 # Update Layout for Better Appearance
-fig1.update_layout(title_text=r"$ \textsf{Stock 1 and Stock 2 Daily Close Prices }P_t $", showlegend=False, height=300)
+fig1.update_layout(title_text=r"Stock 1 and Stock 2 Daily Close Prices", showlegend=False, height=300)
 
 fig2 = make_subplots(
     rows=1,
@@ -101,7 +101,7 @@ fig2.update_layout(height=300, title_text=r"Stock 1 and Stock 2 Daily Returns", 
 
 # Display the Combined Plot
 st.plotly_chart(fig1, width="content")
-st.components.v1.html(fig1.to_html(include_mathjax='cdn'), height=300)
+#st.components.v1.html(fig1.to_html(include_mathjax='cdn'), height=300)
 
 st.markdown(r"""
 

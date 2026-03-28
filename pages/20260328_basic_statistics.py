@@ -106,9 +106,11 @@ st.plotly_chart(fig1, width="content")
 st.markdown(r"""
 
 好多時喺Finance嘅世界係比較少直接用Price去計啲Statistics，主要原因係做唔到股票之間嘅比較。
-例如一隻五蚊升咗五毫，另一隻百幾蚊升咗十蚊，個Price唔喺同一個scale係冇得比較。但係個Return (升咗幾多percent)就可以較喇。
+例如一隻五蚊升咗五毫，另一隻百幾蚊升咗十蚊，個Price唔喺同一個scale係冇得比較。但係個Return (升咗幾多percent)就可以比較喇。
 
 首先我哋要由Daily Close Price 轉做 Simple Daily Return (又稱Arithmetic Return)：
+
+(Sidetrack少少，仲有Geometric Return同Log Return…)
 
 """)
 
@@ -121,6 +123,8 @@ st.latex(r"""
 
 
 st.markdown(r"""
+
+
 
 然後將啲 Data Points ($$ R_t $$) Plot 做 Histogram 睇下個樣大槪係點。
 

@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from streamlit_js_eval import streamlit_js_eval
 
+
 # ==========================================
 # Helper Functions
 # ==========================================
@@ -19,7 +20,7 @@ def generate_gbm_prices(S0, mu, sigma, days, seed=42):
     prices = [S0]
     for _ in range(days - 1):
         dW = np.random.normal(0, np.sqrt(dt))
-        S_new = prices[-1] * np.exp((mu - 0.5 * sigma**2) * dt + sigma * dW)
+        S_new = prices[-1] * np.exp((mu - 0.5 * sigma ** 2) * dt + sigma * dW)
         prices.append(S_new)
     return np.array(prices)
 
@@ -63,7 +64,7 @@ st.write(
 # ==========================================
 # Article: What is a Return?
 # ==========================================
-st.markdown("""
+st.markdown(r"""
 ## What is a "Return"?
 
 When we talk about stock returns, there are two common ways to measure them:
@@ -71,9 +72,34 @@ When we talk about stock returns, there are two common ways to measure them:
 ### 1. Simple Return (Arithmetic Return)
 
 The simple return measures the percentage change in price:
+
+
 """)
 
-st.latex(r"r_t = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1")
+#st.latex(r"r_t = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1")
+#st.markdown("<p style='padding-top:20px'></p>", unsafe_allow_html=True)
+st.latex(r"""
+\begin{align*}
+
+r_t &= \frac{P_t - P_{t-1}}{P_{t-1}} \\
+    &= \frac{P_t}{P_{t-1}} - 1
+
+\end{align*}
+""")
+
+#st.markdown(r"""
+#again with another streamlit tag
+#
+#$$
+#\begin{align*}
+#
+#r_t &= \frac{P_t - P_{t-1}}{P_{t-1}} \\
+#    &= \frac{P_t}{P_{t-1}} - 1
+#
+#\end{align*}
+#$$
+#""")
+
 
 st.markdown("""
 ### 2. Log Return (Continuously Compounded Return)
@@ -81,7 +107,14 @@ st.markdown("""
 The log return uses the natural logarithm:
 """)
 
-st.latex(r"r_t^{log} = \ln\left(\frac{P_t}{P_{t-1}}\right) = \ln(P_t) - \ln(P_{t-1})")
+st.write(r"""
+$$
+\begin{align*}
+    r_t^{log} &= \ln\left(\frac{P_t}{P_{t-1}}\right) \\
+              &= \ln(P_t) - \ln(P_{t-1})
+\end{align*}
+$$   
+""")
 
 st.markdown("""
 **Why use log returns?**
@@ -165,7 +198,7 @@ with st.expander("Simulation Parameters", expanded=True):
             sim_mu = st.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
         with col2:
             sim_sigma = (
-                st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
+                    st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
             )
             sim_days = st.slider("Trading Days", 30, 504, 252)
         with col3:
@@ -276,14 +309,16 @@ fig.update_yaxes(title_text="Return", row=1, col=2)
 fig.update_yaxes(title_text="Frequency", row=2, col=1)
 fig.update_yaxes(title_text="Frequency", row=2, col=2)
 
-st.plotly_chart(fig, use_container_width=True)
+# st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width='stretch')
+#st.plotly_chart(fig, width='content')
 
 # --- Sample Data Preview ---
 with st.expander("View Sample Data"):
     display_df = df.copy()
     display_df["Simple Return"] = [np.nan] + list(simple_returns)
     display_df["Log Return"] = [np.nan] + list(log_returns)
-    st.dataframe(display_df, use_container_width=True)
+    st.dataframe(display_df, width='stretch')
 
 # ==========================================
 # Summary Table

@@ -4,6 +4,7 @@ import pandas as pd
 from scipy.stats import johnsonsu, describe
 from scipy.optimize import minimize
 import plotly.graph_objects as go
+import plotly.express as px
 from plotly.subplots import make_subplots
 from streamlit_js_eval import streamlit_js_eval
 
@@ -45,7 +46,6 @@ def find_johnson_su_params_by_moments(mean, variance, skew, kurt):
     # Location transformation: E[X] = loc + scale * E[Standardized]
     result_loc = mean - result_scale * m0
     return result_a, result_b, result_loc, result_scale
-
 
 
 # page start
@@ -202,32 +202,10 @@ st.markdown(r"""
     - 定係好似買六合彩咁九成九都嬴唔到，不過買好多好多次可能會嬴舖勁嘅(Positive Skew)？
 ##### Kurtosis (4th Moment)
     - 啲Data係唔係極端分散，可以理解成為「極端事件」多唔多發生。
+
+    
+
 """)
-
-screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
-
-
-# with st.expander("Moments Simulation", expanded=True):
-#     if screen_width and screen_width > 768:  # Desktop - use 3 columns
-#         col1, col2, col3 = st.columns(3)
-#         with col1:
-#             sim_S0 = st.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
-#             sim_mu = st.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
-#         with col2:
-#             sim_sigma = (
-#                     st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
-#             )
-#             sim_days = st.slider("Trading Days", 30, 504, 252)
-#         with col3:
-#             sim_seed = st.number_input("Random Seed", value=42, min_value=0)
-#     else:  # Mobile or width not yet detected - vertical stack
-#         sim_S0 = st.number_input("Initial Price (S0)", value=100.0, min_value=1.0)
-#         sim_mu = st.slider("Drift (mu, annual %)", -50.0, 50.0, 10.0) / 100.0
-#         sim_sigma = st.slider("Volatility (sigma, annual %)", 5.0, 100.0, 25.0) / 100.0
-#         sim_days = st.slider("Trading Days", 30, 504, 252)
-#         sim_seed = st.number_input("Random Seed", value=42, min_value=0)
-
-
 
 st.markdown(r"""
 
@@ -252,4 +230,89 @@ st.markdown(r"""
 
 …唉……啲stat嘅formula 真係樣衰到一個點……… 
 
+呢度有個簡單Simulation可以攞個關於Moments 嘅 Feeling
+
 """)
+
+
+
+screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
+use_desktop = screen_width is not None and screen_width > 768
+with st.expander("Moments Simulation", expanded=True):
+    if use_desktop:
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            target_mean = st.slider("Mean", -0.50, 0.5, 0.02)
+        with col2:
+            target_variance = st.slider("Variance", 0.01, 0.09, 0.01)
+        with col3:
+            target_skewness = st.slider("Skewness", -2.5, 2.5, 0.1)
+        with col4:
+            target_kurtosis = st.slider("Kurtosis", 0.01, 5.0, 0.01)
+    else:  # Mobile or width not yet detected - vertical stack
+        st.markdown(r"###### Parameters")
+        target_mean = st.slider("Mean", -0.50, 0.5, 0.02)
+        target_variance = st.slider("Variance", 0.01, 0.09, 0.01)
+        target_skewness = st.slider("Skewness", -2.5, 2.5, 0.1)
+        target_kurtosis = st.slider("Kurtosis", 0.01, 5.0, 0.01)
+
+    # hardcoded parameters
+    samples_count = 20000
+    seed = 2351397
+    # estimate the parameters
+    param_a, param_b, param_loc, param_scale = find_johnson_su_params_by_moments(target_mean, target_variance, target_skewness, target_kurtosis)
+    np.random.seed(seed)
+    sim_moments_data = johnsonsu.rvs(a=param_a, b=param_b, loc=param_loc, scale=param_scale, size=samples_count)
+    res = describe(sim_moments_data)
+    sample_mean = res.mean
+    sample_variance = res.variance
+    sample_skewness = res.skewness
+    sample_kurtosis = res.kurtosis
+    theo_mean, theo_variance, theo_skewness, theo_kurtosis = johnsonsu.stats(param_a, param_b, loc=param_loc, scale=param_scale, moments='mvsk')
+    if use_desktop:
+        with col1:
+            st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} = {sample_mean:.3f}")
+        with col2:
+            st.latex(f"\\textsf{{Sample Variance }} s = {sample_variance:.3f}")
+        with col3:
+            st.latex(f"\\textsf{{Sample Skewness }} G_1 = {sample_skewness:.3f}")
+        with col4:
+            st.latex(f"\\textsf{{Sample Kurtosis }} G_2 = {sample_kurtosis:.3f}")
+    else:
+        st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} = {sample_mean:.3f}")
+        st.latex(f"\\textsf{{Sample Variance }} s = {sample_variance:.3f}")
+        st.latex(f"\\textsf{{Sample Skewness }} G_1 = {sample_skewness:.3f}")
+        st.latex(f"\\textsf{{Sample Kurtosis }} G_2 = {sample_kurtosis:.3f}")
+
+    sim_moments_df = pd.DataFrame({'Value': sim_moments_data})
+
+    # --- Plotly Visualization ---
+    sim_moments_fig = px.histogram(
+        sim_moments_df,
+        x='Value',
+        nbins=200,
+        title=f'Generated {len(sim_moments_data)} Samples',
+        template='plotly_dark',  # Optimized for high-res dark mode viewing
+        labels={'Value': 'Sample Value'},
+        opacity=0.75
+    )
+
+    # Highlight the Mean
+    sim_moments_fig.add_vline(
+        x=sample_mean,
+        line_dash='dash',
+        line_color='red',
+        annotation_text=f'Sample Mean: {sample_mean:.2f}',
+        annotation_position='top right'
+    )
+
+    # Update layout for clarity
+    sim_moments_fig.update_layout(
+        bargap=0.1,
+        xaxis_title=f'Sample Values',
+        yaxis_title='Frequency',
+        showlegend=False,
+        xaxis=dict(range=[-4, 4]),
+        yaxis=dict(range=[0, 2000]),
+    )
+    st.plotly_chart(sim_moments_fig, width="content")

@@ -139,14 +139,14 @@ with st.expander("Data Points"):
 
 st.markdown(r"""
 
-如果用數字嚟描述一下啲Data，可以計以下四個Sample Moments：
+如果用數字嚟描述一下啲Data，可以計以下四個Moments：
 
 - Mean
     - 平均Daily Return有幾多
 - Variance
     - 平均Daily Return同實際Data Point差幾遠，可以理解成「一般風險」。
 - Skewness
-    - 啲Daily Return 會唔會係嬴粒糖輸間廠咁(Negative Skew)？
+    - 啲Daily Return 會唔會成日都係嬴粒糖輸間廠咁(Negative Skew)？
     - 定係好似買六合彩咁九成九都嬴唔到，不過買好多好多次可能會嬴舖勁嘅(Positive Skew)？
 - Kurtosis
     - 啲Data係唔係極端分散，可以理解成為「極端事件」多唔多發生。

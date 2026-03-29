@@ -132,13 +132,15 @@ fig2 = make_subplots(
 )
 
 # Add Daily Returns Histograms
+stock1_daily_return = stock1["daily_return"][1:]
+stock2_daily_return = stock2["daily_return"][1:]
 fig2.add_trace(
-    go.Histogram(x=stock1["daily_return"], nbinsx=50, name="Stock 1 Returns"),
+    go.Histogram(x=stock1_daily_return, nbinsx=50, name="Stock 1 Returns"),
     row=1,
     col=1,
 )
 fig2.add_trace(
-    go.Histogram(x=stock2["daily_return"], nbinsx=50, name="Stock 2 Returns"),
+    go.Histogram(x=stock2_daily_return, nbinsx=50, name="Stock 2 Returns"),
     row=1,
     col=2,
 )
@@ -211,7 +213,14 @@ st.markdown(r"""
 
 每隻股票Raw Data有252個Day Close Price $$ P_t $$，所以一共有251個Return $$ R_t $$，$$ n = 251 $$ 
 
+通常啲Statistics嘅Software都會有個類似Describe嘅Function，一Call佢就會出哂呢四粒數。
+
 """)
+
+#stock1_descriptive_statistics = describe(stock1_daily_return)
+st.markdown(f"stock 1 stat = {describe(stock1_daily_return)}")
+st.markdown(f"stock 2 stat = {describe(stock2_daily_return)}")
+
 
 st.latex(r"""
 \begin{align*}

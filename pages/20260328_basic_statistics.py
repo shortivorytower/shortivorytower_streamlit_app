@@ -132,13 +132,15 @@ fig2 = make_subplots(
 )
 
 # Add Daily Returns Histograms
+stock1_daily_return = stock1["daily_return"][1:]
+stock2_daily_return = stock2["daily_return"][1:]
 fig2.add_trace(
-    go.Histogram(x=stock1["daily_return"], nbinsx=50, name="Stock 1 Returns"),
+    go.Histogram(x=stock1_daily_return, nbinsx=50, name="Stock 1 Returns"),
     row=1,
     col=1,
 )
 fig2.add_trace(
-    go.Histogram(x=stock2["daily_return"], nbinsx=50, name="Stock 2 Returns"),
+    go.Histogram(x=stock2_daily_return, nbinsx=50, name="Stock 2 Returns"),
     row=1,
     col=2,
 )
@@ -211,28 +213,17 @@ st.markdown(r"""
 
 每隻股票Raw Data有252個Day Close Price $$ P_t $$，所以一共有251個Return $$ R_t $$，$$ n = 251 $$ 
 
-""")
-
-st.latex(r"""
-\begin{align*}
-\textsf{Sample Mean } \bar{R} &= \frac{\sum_{i=1}^{n} R_i}{n} \\ 
-
-\textsf{Sample Variance } s^2 &= \frac{\sum_{i=1}^{n} (R_i - \bar{R})^2}{n-1} \\
-
-\textsf{Sample Skewness } G_1 &= \frac{n}{(n-1)(n-2)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^3 \\
-
-\textsf{Sample Kurtosis } G_2 &= \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^4 - \frac{3(n-1)^2}{(n-2)(n-3)}
-
-\end{align*}
-""")
-
-st.markdown(r"""
-
-…唉……啲stat嘅formula 真係樣衰到一個點……… 
+通常啲Statistics嘅Software都會有個類似Describe嘅Function，一Call佢就會出哂呢四粒數。
 
 呢度有個簡單Simulation可以攞個關於Moments 嘅 Feeling
 
 """)
+
+#stock1_descriptive_statistics = describe(stock1_daily_return)
+#st.markdown(f"stock 1 stat = {describe(stock1_daily_return)}")
+#st.markdown(f"stock 2 stat = {describe(stock2_daily_return)}")
+
+
 
 
 
@@ -316,3 +307,35 @@ with st.expander("Moments Simulation", expanded=True):
         yaxis=dict(range=[0, 2000]),
     )
     st.plotly_chart(sim_moments_fig, width="content")
+
+
+with st.expander("Formula", expanded=False):
+    st.markdown(r"""
+
+    啲stat嘅formula 真係樣衰到呢…………唉…… 
+
+    Concept：
+    
+    - 左邊Definition個 $$ R $$ 係一個 Random Variable，係一個Black Box，我地永遠都唔會知佢Exactly係點運作。
+    
+    - 右邊Estimator嘅 $$ R_i : i = 1, 2, 3 \ldots n $$ 係一堆 Sample Data Points，我地係用右邊嘅Formula 去估左邊嗰條數。
+
+
+    |  | Definition | Estimator |
+    |:---|:---|:---|
+    |Mean (1st Moment)| $$ \mu = E \bigr[ R \bigl] $$ | $$ \bar{R} = \frac{\sum_{i=1}^{n} R_i}{n} $$ |
+    |Variance (2nd Moment)| $$ Var(R) = \sigma^2 = E \bigr[ (R-\mu)^2 \bigl] $$ | $$ s^2 = \frac{\sum_{i=1}^{n} (R_i - \bar{R})^2}{n-1} $$ |
+    |Skewness (3rd Moment)| $$ \gamma_1 = E \Bigr[ \bigr(\frac{R-\mu}{\sigma} \bigl)^3 \Bigl] $$ | $$ G_1 = \frac{n}{(n-1)(n-2)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^3 $$ |
+    |Kurtosis (4th Moment)| $$ \kappa = E \Bigr[ \bigr(\frac{R-\mu}{\sigma} \bigl)^4 \Bigl] $$ | $$ K = \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^4  $$ |
+    |Excess Kurtosis| $$ \gamma_2 = E \Bigr[ \bigr(\frac{R-\mu}{\sigma} \bigl)^4 \Bigl] - 3 $$ | $$ G_2 = \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^4 - \frac{3(n-1)^2}{(n-2)(n-3)} $$ |
+    """)
+
+    st.markdown(r"""
+    
+    Note：
+    
+    - 通常喺Finance 嘅世界，一般都係講Excess Kurtosis (i.e. Kurtosis - 3)。
+    
+    - 因為Normal Distribution 嘅 Kurtosis 係 exactly 3，槪念係講緊究竟啲Data 肥過Normal多。不過Excess Kurtosis 唔係一個Moment。
+
+    """)

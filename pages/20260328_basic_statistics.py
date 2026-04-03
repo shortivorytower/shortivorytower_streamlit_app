@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from scipy.stats import johnsonsu, describe
+from scipy.stats import johnsonsu, kurtosis, describe
 from scipy.optimize import minimize
 import plotly.graph_objects as go
 import plotly.express as px
@@ -239,13 +239,13 @@ with st.expander("Moments Simulation", expanded=True):
         with col3:
             target_skewness = st.slider("Skewness", -2.5, 2.5, 0.1)
         with col4:
-            target_kurtosis = st.slider("Kurtosis", 0.01, 5.0, 0.01)
+            target_kurtosis = st.slider("Excess Kurtosis", 0.01, 5.0, 0.01)
     else:  # Mobile or width not yet detected - vertical stack
         st.markdown(r"###### Parameters")
         target_mean = st.slider("Mean", -0.50, 0.5, 0.02)
         target_variance = st.slider("Variance", 0.01, 0.09, 0.01)
         target_skewness = st.slider("Skewness", -2.5, 2.5, 0.1)
-        target_kurtosis = st.slider("Kurtosis", 0.01, 5.0, 0.01)
+        target_kurtosis = st.slider("Excess Kurtosis", 0.01, 5.0, 0.01)
 
     # hardcoded parameters
     samples_count = 20000
@@ -258,7 +258,8 @@ with st.expander("Moments Simulation", expanded=True):
     sample_mean = res.mean
     sample_variance = res.variance
     sample_skewness = res.skewness
-    sample_kurtosis = res.kurtosis
+    #sample_kurtosis = kurtosis(np.random.normal(loc=0.0, scale=1.0, size=10000), fisher=True, bias=False)
+    sample_kurtosis = kurtosis(sim_moments_data, fisher=True, bias=False)
     theo_mean, theo_variance, theo_skewness, theo_kurtosis = johnsonsu.stats(param_a, param_b, loc=param_loc, scale=param_scale, moments='mvsk')
     if use_desktop:
         with col1:
@@ -268,7 +269,7 @@ with st.expander("Moments Simulation", expanded=True):
         with col3:
             st.latex(f"\\textsf{{Sample Skewness }} G_1 = {sample_skewness:.3f}")
         with col4:
-            st.latex(f"\\textsf{{Sample Kurtosis }} G_2 = {sample_kurtosis:.3f}")
+            st.latex(f"\\textsf{{Sample (Excess) Kurtosis }} G_2 = {sample_kurtosis:.3f}")
     else:
         st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} = {sample_mean:.3f}")
         st.latex(f"\\textsf{{Sample Variance }} s = {sample_variance:.3f}")
@@ -336,6 +337,6 @@ with st.expander("Formula", expanded=False):
     
     - 通常喺Finance 嘅世界，一般都係講Excess Kurtosis (i.e. Kurtosis - 3)。
     
-    - 因為Normal Distribution 嘅 Kurtosis 係 exactly 3，槪念係講緊究竟啲Data 肥過Normal多。不過Excess Kurtosis 唔係一個Moment。
+    - 因為Normal Distribution 嘅 Kurtosis 係 3，槪念係講緊究竟啲Data 肥過Normal多。Excess Kurtosis 將佢Normalize返去0，正數就代表佢肥過Normal， 不過Excess Kurtosis唔係一個Moment。
 
     """)

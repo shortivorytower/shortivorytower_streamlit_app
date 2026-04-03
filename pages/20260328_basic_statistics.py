@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from scipy.stats import johnsonsu, kurtosis, describe
+from scipy.stats import johnsonsu, kurtosis, skew, describe
 from scipy.optimize import minimize
 import plotly.graph_objects as go
 import plotly.express as px
@@ -200,7 +200,7 @@ st.markdown(r"""
 ##### Variance (2nd Moment)
     - 平均Daily Return同實際Data Point差幾遠，可以理解成「一般風險」。
 ##### Skewness (3rd Moment)
-    - 啲Daily Return 會唔會成日都係嬴粒糖輸間廠咁(Negative Skew)？
+    - 啲Daily Return 會唔會平時冇乜嘢，不過每隔一排就一舖過輸身家咁(Negative Skew)？
     - 定係好似買六合彩咁九成九都嬴唔到，不過買好多好多次可能會嬴舖勁嘅(Positive Skew)？
 ##### Kurtosis (4th Moment)
     - 啲Data係唔係極端分散，可以理解成為「極端事件」多唔多發生。
@@ -219,12 +219,9 @@ st.markdown(r"""
 
 """)
 
-#stock1_descriptive_statistics = describe(stock1_daily_return)
-#st.markdown(f"stock 1 stat = {describe(stock1_daily_return)}")
-#st.markdown(f"stock 2 stat = {describe(stock2_daily_return)}")
-
-
-
+# stock1_descriptive_statistics = describe(stock1_daily_return)
+# st.markdown(f"stock 1 stat = {describe(stock1_daily_return)}")
+# st.markdown(f"stock 2 stat = {describe(stock2_daily_return)}")
 
 
 screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
@@ -250,17 +247,29 @@ with st.expander("Moments Simulation", expanded=True):
     # hardcoded parameters
     samples_count = 20000
     seed = 2351397
+
     # estimate the parameters
-    param_a, param_b, param_loc, param_scale = find_johnson_su_params_by_moments(target_mean, target_variance, target_skewness, target_kurtosis)
-    np.random.seed(seed)
-    sim_moments_data = johnsonsu.rvs(a=param_a, b=param_b, loc=param_loc, scale=param_scale, size=samples_count)
+    try:
+        param_a, param_b, param_loc, param_scale = find_johnson_su_params_by_moments(target_mean, target_variance, target_skewness, target_kurtosis)
+        np.random.seed(seed)
+        sim_moments_data = johnsonsu.rvs(a=param_a, b=param_b, loc=param_loc, scale=param_scale, size=samples_count)
+        theo_mean, theo_variance, theo_skewness, theo_kurtosis = johnsonsu.stats(param_a, param_b, loc=param_loc, scale=param_scale, moments='mvsk')
+    except:
+        sim_moments_data = np.random.normal(loc=target_mean, scale=np.sqrt(target_variance), size=samples_count)
+        theo_mean = target_mean
+        theo_variance = target_variance
+        theo_skewness = 0.0
+        theo_kurtosis = 0.0
+        st.markdown(r"""
+        <span style="color: red;">Solve 唔到 parameters，求其俾住Normal先</span>
+        """, unsafe_allow_html=True)
+
     res = describe(sim_moments_data)
     sample_mean = res.mean
     sample_variance = res.variance
-    sample_skewness = res.skewness
-    #sample_kurtosis = kurtosis(np.random.normal(loc=0.0, scale=1.0, size=10000), fisher=True, bias=False)
+    sample_skewness = skew(sim_moments_data, bias=False)
     sample_kurtosis = kurtosis(sim_moments_data, fisher=True, bias=False)
-    theo_mean, theo_variance, theo_skewness, theo_kurtosis = johnsonsu.stats(param_a, param_b, loc=param_loc, scale=param_scale, moments='mvsk')
+
     if use_desktop:
         with col1:
             st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} = {sample_mean:.3f}")
@@ -308,7 +317,6 @@ with st.expander("Moments Simulation", expanded=True):
         yaxis=dict(range=[0, 2000]),
     )
     st.plotly_chart(sim_moments_fig, width="content")
-
 
 with st.expander("Formula", expanded=False):
     st.markdown(r"""

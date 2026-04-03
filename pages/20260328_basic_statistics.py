@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from scipy.stats import johnsonsu, kurtosis, skew, describe
+from scipy.stats import johnsonsu, kurtosis, skew, tvar, tmean
 from scipy.optimize import minimize
 import plotly.graph_objects as go
 import plotly.express as px
@@ -213,20 +213,16 @@ st.markdown(r"""
 
 每隻股票Raw Data有252個Day Close Price $$ P_t $$，所以一共有251個Return $$ R_t $$，$$ n = 251 $$ 
 
-通常啲Statistics嘅Software都會有個類似Describe嘅Function，一Call佢就會出哂呢四粒數。
+通常啲 Statistics 嘅 Software 都會有個類似 Describe 嘅 Function，一Call佢就會出哂呢四粒數。
 
-呢度有個簡單Simulation可以攞個關於Moments 嘅 Feeling
+不過用呢啲 Function 最緊要係 Check 清楚 Documentation，例如Python scipy.stats.describe 就寫明冇處理 skewness 同 kurtosis 嘅 bias。
+
 
 """)
 
-# stock1_descriptive_statistics = describe(stock1_daily_return)
-# st.markdown(f"stock 1 stat = {describe(stock1_daily_return)}")
-# st.markdown(f"stock 2 stat = {describe(stock2_daily_return)}")
-
-
 screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
 use_desktop = screen_width is not None and screen_width > 768
-with st.expander("Moments Simulation", expanded=True):
+with st.expander("一個簡單Simulation可以攞個關於Moments 嘅 Feeling", expanded=False):
     if use_desktop:
         col1, col2, col3, col4 = st.columns(4)
         with col1:
@@ -264,26 +260,25 @@ with st.expander("Moments Simulation", expanded=True):
         <span style="color: red;">Solve 唔到 parameters，求其俾住Normal先</span>
         """, unsafe_allow_html=True)
 
-    res = describe(sim_moments_data)
-    sample_mean = res.mean
-    sample_variance = res.variance
+    sample_mean = tmean(sim_moments_data)
+    sample_variance = tvar(sim_moments_data)
     sample_skewness = skew(sim_moments_data, bias=False)
     sample_kurtosis = kurtosis(sim_moments_data, fisher=True, bias=False)
 
     if use_desktop:
         with col1:
-            st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} = {sample_mean:.3f}")
+            st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} \\\\ {sample_mean:.3f}")
         with col2:
-            st.latex(f"\\textsf{{Sample Variance }} s = {sample_variance:.3f}")
+            st.latex(f"\\textsf{{Sample Variance }} s \\\\ {sample_variance:.3f}")
         with col3:
-            st.latex(f"\\textsf{{Sample Skewness }} G_1 = {sample_skewness:.3f}")
+            st.latex(f"\\textsf{{Sample Skewness }} G_1 \\\\ {sample_skewness:.3f}")
         with col4:
-            st.latex(f"\\textsf{{Sample (Excess) Kurtosis }} G_2 = {sample_kurtosis:.3f}")
+            st.latex(f"\\textsf{{Sample (Excess) Kurtosis }} G_2 \\\\ {sample_kurtosis:.3f}")
     else:
-        st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} = {sample_mean:.3f}")
-        st.latex(f"\\textsf{{Sample Variance }} s = {sample_variance:.3f}")
-        st.latex(f"\\textsf{{Sample Skewness }} G_1 = {sample_skewness:.3f}")
-        st.latex(f"\\textsf{{Sample Kurtosis }} G_2 = {sample_kurtosis:.3f}")
+        st.latex(f"\\textsf{{Sample Mean }} \\bar{{R}} \\\\ {sample_mean:.3f}")
+        st.latex(f"\\textsf{{Sample Variance }} s \\\\ {sample_variance:.3f}")
+        st.latex(f"\\textsf{{Sample Skewness }} G_1 \\\\ {sample_skewness:.3f}")
+        st.latex(f"\\textsf{{Sample Kurtosis }} G_2 \\\\ {sample_kurtosis:.3f}")
 
     sim_moments_df = pd.DataFrame({'Value': sim_moments_data})
 
@@ -313,8 +308,8 @@ with st.expander("Moments Simulation", expanded=True):
         xaxis_title=f'Sample Values',
         yaxis_title='Frequency',
         showlegend=False,
-        xaxis=dict(range=[-4, 4]),
-        yaxis=dict(range=[0, 2000]),
+        xaxis=dict(range=[-4, 4], showgrid=True, gridwidth=1, zeroline=True),
+        yaxis=dict(range=[0, 2000], showgrid=True, gridwidth=1, zeroline=True),
     )
     st.plotly_chart(sim_moments_fig, width="content")
 

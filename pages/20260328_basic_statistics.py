@@ -90,20 +90,29 @@ st.markdown(r"""
 # Load Data
 stock1 = pd.read_csv("assets/pages/20260308_basic_statistics/stock1_px_close.csv")
 stock2 = pd.read_csv("assets/pages/20260308_basic_statistics/stock2_px_close.csv")
+spx = pd.read_csv("assets/pages/20260308_basic_statistics/spx_close.csv")
+ccmp = pd.read_csv("assets/pages/20260308_basic_statistics/ccmp_close.csv")
 
 # Process Data
 stock1["trade_date"] = pd.to_datetime(stock1["trade_date"])
 stock2["trade_date"] = pd.to_datetime(stock2["trade_date"])
+spx["trade_date"] = pd.to_datetime(spx["trade_date"])
+ccmp["trade_date"] = pd.to_datetime(ccmp["trade_date"])
+
 stock1["daily_return"] = stock1["px_close"].pct_change()
 stock2["daily_return"] = stock2["px_close"].pct_change()
+spx["daily_return"] = spx["px_close"].pct_change()
+ccmp["daily_return"] = ccmp["px_close"].pct_change()
 
 # Create Combined Subplots
 fig1 = make_subplots(
-    rows=1,
+    rows=2,
     cols=2,
     subplot_titles=(
         "Stock 1 Close Price",
         "Stock 2 Close Price",
+        "S&P 500 Close",
+        "NASDAQ Composite Close"
     ),
 )
 
@@ -118,22 +127,36 @@ fig1.add_trace(
     row=1,
     col=2,
 )
+fig1.add_trace(
+    go.Scatter(x=spx["trade_date"], y=spx["px_close"], name="S&P 500 Close"),
+    row=2,
+    col=1,
+)
+fig1.add_trace(
+    go.Scatter(x=ccmp["trade_date"], y=ccmp["px_close"], name="NASDAQ Composite Close"),
+    row=2,
+    col=2,
+)
 
 # Update Layout for Better Appearance
-fig1.update_layout(title_text=r"Stock 1 and Stock 2 Daily Close Prices", showlegend=False, height=300)
+fig1.update_layout(title_text=r"Daily Close Prices", showlegend=False, height=500)
 
 fig2 = make_subplots(
-    rows=1,
+    rows=2,
     cols=2,
     subplot_titles=(
         "Stock 1 Daily Returns Histogram",
         "Stock 2 Daily Returns Histogram",
+        "S&P 500 Daily Returns Histogram",
+        "NASDAQ Composite Daily Returns Histogram",
     ),
 )
 
 # Add Daily Returns Histograms
 stock1_daily_return = stock1["daily_return"][1:]
 stock2_daily_return = stock2["daily_return"][1:]
+spx_daily_return = spx["daily_return"][1:]
+ccmp_daily_return = ccmp["daily_return"][1:]
 fig2.add_trace(
     go.Histogram(x=stock1_daily_return, nbinsx=50, name="Stock 1 Returns"),
     row=1,
@@ -144,7 +167,18 @@ fig2.add_trace(
     row=1,
     col=2,
 )
-fig2.update_layout(height=300, title_text=r"Stock 1 and Stock 2 Daily Returns", showlegend=False)
+fig2.add_trace(
+    go.Histogram(x=spx_daily_return, nbinsx=50, name="S&P 500 Returns"),
+    row=2,
+    col=1,
+)
+fig2.add_trace(
+    go.Histogram(x=ccmp_daily_return, nbinsx=50, name="NASDAQ Composite Returns"),
+    row=2,
+    col=2,
+)
+
+fig2.update_layout(height=500, title_text=r"Daily Returns Histograms", showlegend=False)
 
 # Display the Combined Plot
 st.plotly_chart(fig1, width="content")
@@ -193,7 +227,7 @@ with st.expander("Data Points"):
 
 st.markdown(r"""
 
-#### 如果用數字嚟描述一下啲Data，可以計以下四個Moments：
+#### 如果要用數字嚟描述一下啲Data，可以計以下四個Moments：
 
 ##### Mean (1st Moment)
     - 平均Daily Return有幾多
@@ -222,7 +256,7 @@ st.markdown(r"""
 
 screen_width = streamlit_js_eval(js_expressions="window.innerWidth", key="screen_width")
 use_desktop = screen_width is not None and screen_width > 768
-with st.expander("一個簡單Simulation可以攞個關於Moments 嘅 Feeling", expanded=False):
+with st.expander("做個簡單Simulation就可以Feel 到乜嘢係Moments", expanded=False):
     if use_desktop:
         col1, col2, col3, col4 = st.columns(4)
         with col1:
@@ -329,6 +363,7 @@ with st.expander("Formula", expanded=False):
     |:---|:---|:---|
     |Mean (1st Moment)| $$ \mu = E \bigr[ R \bigl] $$ | $$ \bar{R} = \frac{\sum_{i=1}^{n} R_i}{n} $$ |
     |Variance (2nd Moment)| $$ Var(R) = \sigma^2 = E \bigr[ (R-\mu)^2 \bigl] $$ | $$ s^2 = \frac{\sum_{i=1}^{n} (R_i - \bar{R})^2}{n-1} $$ |
+    |Standard Deviation / Volatility | $$ \sigma = \sqrt{Var(R)} $$ | $$ s = \sqrt{\frac{\sum_{i=1}^{n} (R_i - \bar{R})^2}{n-1}} $$ |
     |Skewness (3rd Moment)| $$ \gamma_1 = E \Bigr[ \bigr(\frac{R-\mu}{\sigma} \bigl)^3 \Bigl] $$ | $$ G_1 = \frac{n}{(n-1)(n-2)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^3 $$ |
     |Kurtosis (4th Moment)| $$ \kappa = E \Bigr[ \bigr(\frac{R-\mu}{\sigma} \bigl)^4 \Bigl] $$ | $$ K = \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^4  $$ |
     |Excess Kurtosis| $$ \gamma_2 = E \Bigr[ \bigr(\frac{R-\mu}{\sigma} \bigl)^4 \Bigl] - 3 $$ | $$ G_2 = \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum_{i=1}^{n} \left( \frac{R_i - \bar{R}}{s} \right)^4 - \frac{3(n-1)^2}{(n-2)(n-3)} $$ |
@@ -338,8 +373,79 @@ with st.expander("Formula", expanded=False):
     
     Note：
     
+    - 好多時講Return 我地都會講Volatility (波幅)，其實即係 Standard Deviation (Variance Square Root)。
+    
+    - 而Mean / Variance / Volatility 我地會做一個Annualized 嘅轉換：
+      - Mean 乘 $$ 252 $$ (假設一年252 個 trading days)
+      - Variance 都係乘 $$ 252 $$
+      - Volatility 乘 $$ \sqrt{252} $$
+
     - 通常喺Finance 嘅世界，一般都係講Excess Kurtosis (i.e. Kurtosis - 3)。
     
     - 因為Normal Distribution 嘅 Kurtosis 係 3，槪念係講緊究竟啲Data 肥過Normal多。Excess Kurtosis 將佢Normalize返去0，正數就代表佢肥過Normal， 不過Excess Kurtosis唔係一個Moment。
 
     """)
+
+stock1_sample_mean = tmean(stock1_daily_return)
+stock1_sample_variance = tvar(stock1_daily_return)
+stock1_sample_volatility = np.sqrt(stock1_sample_variance)
+stock1_sample_skewness = skew(stock1_daily_return, bias=False)
+stock1_sample_kurtosis = kurtosis(stock1_daily_return, fisher=True, bias=False)
+
+stock2_sample_mean = tmean(stock2_daily_return)
+stock2_sample_variance = tvar(stock2_daily_return)
+stock2_sample_volatility = np.sqrt(stock2_sample_variance)
+stock2_sample_skewness = skew(stock2_daily_return, bias=False)
+stock2_sample_kurtosis = kurtosis(stock2_daily_return, fisher=True, bias=False)
+
+spx_sample_mean = tmean(spx_daily_return)
+spx_sample_variance = tvar(spx_daily_return)
+spx_sample_volatility = np.sqrt(spx_sample_variance)
+spx_sample_skewness = skew(spx_daily_return, bias=False)
+spx_sample_kurtosis = kurtosis(spx_daily_return, fisher=True, bias=False)
+
+ccmp_sample_mean = tmean(ccmp_daily_return)
+ccmp_sample_variance = tvar(ccmp_daily_return)
+ccmp_sample_volatility = np.sqrt(ccmp_sample_variance)
+ccmp_sample_skewness = skew(ccmp_daily_return, bias=False)
+ccmp_sample_kurtosis = kurtosis(ccmp_daily_return, fisher=True, bias=False)
+
+st.markdown(r"""
+
+##### 上面嗰兩隻Stock 1 同 Stock 2 其實都係兩隻美國嘅科技龍頭股，S&P 500 代表美國般市場表現，而NASDAQ Composite 就代表科技股普遍嘅表現
+
+我地可以計一計佢哋嘅Stats：
+
+""")
+
+st.markdown(f"""
+    | | Stock 1 | Stock 2 | S&P 500 | NASDAQ Composite |
+    |:---|---:|---:|---:|---:|
+    |Mean (Annualized)| $$ {stock1_sample_mean * 252.0:.4f} $$ | $$ {stock2_sample_mean * 252.0:.4f} $$ | $$ {spx_sample_mean * 252.0:.4f} $$ | $$ {ccmp_sample_mean * 252.0:.4f} $$ |
+    |Volatility (Annualized)| $$ {stock1_sample_volatility * np.sqrt(252.0):.4f} $$ | $$ {stock2_sample_volatility * np.sqrt(252.0):.4f} $$ | $$ {spx_sample_volatility * np.sqrt(252.0):.4f}  $$ | $$ {ccmp_sample_volatility * np.sqrt(252.0):.4f} $$ |
+    |Skewness| $$ {stock1_sample_skewness:.4f} $$ | $$ {stock2_sample_skewness:.4f} $$ | $$ {spx_sample_skewness:.4f} $$ | $$ {ccmp_sample_skewness:.4f} $$ |
+    |Excess Kurtosis| $$ {stock1_sample_kurtosis:.4f} $$ | $$ {stock2_sample_kurtosis:.4f} $$ | $$ {spx_sample_kurtosis:.4f} $$ | $$ {ccmp_sample_kurtosis:.4f} $$ |
+    
+""")
+
+
+st.markdown(r"""
+
+##### 數字可以試下咁樣 interpret
+
+- 兩隻科技股雖然Annualized Return高好多（分別係49%同84%）
+- 但Annualized Vol亦大得多（兩隻股票分別41%、65%，而大市S&P500得18%，NASDAQ都只係23%）。代表一日波幅可以好瘋狂，抽中一個大日仔贏好多，但輸嗰陣一樣輸勁多。Volatility 係冇正負嘅 Concept。
+- Skewness全部 Positive，代表拉上補下，多咗一啲 “大贏” 嘅日子，喺2025下半年科技股狂升嘛。不過呢啲 Positive Skew唔係咁常見，因為正常市場數字一般都係接近零或Slightly Negative。
+- Kurtosis全部都係極誇張，尤其S&P 500/NASDAQ（20以上），證明股市唔係平時咁穩定，好多時會出現一次過好誇張大升／大跌，大部分日子冇乜野，一爆就癲哂。
+
+
+""")
+
+
+st.markdown(r"""
+
+#### 總結一下：
+
+上面嗰幾點聽落可能好廢，其實可能就咁睇下個圖或者留意下新聞都會有個大概嘅印象，但係用Normalized 左嘅數字嚟睇就會客觀咁比較，而且可以用電腦大規模將幾千隻股票一次過計哂 Save 落 Database，就可以有系統咁做 Optimization 同砌一啲 Strategy 出嚟。 
+
+""")

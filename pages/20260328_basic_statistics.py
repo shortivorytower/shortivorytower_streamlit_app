@@ -433,10 +433,10 @@ st.markdown(r"""
 
 ##### 數字可以試下咁樣 interpret
 
-- 兩隻科技股雖然Annualized Return高好多（分別係49%同84%）
-- 但Annualized Vol亦大得多（兩隻股票分別41%、65%，而大市S&P500得18%，NASDAQ都只係23%）。代表一日波幅可以好瘋狂，抽中一個大日仔贏好多，但輸嗰陣一樣輸勁多。Volatility 係冇正負嘅 Concept。
-- Skewness全部 Positive，代表拉上補下，多咗一啲 “大贏” 嘅日子，喺2025下半年科技股狂升嘛。不過呢啲 Positive Skew唔係咁常見，因為正常市場數字一般都係接近零或Slightly Negative。
-- Kurtosis全部都係極誇張，尤其S&P 500/NASDAQ（20以上），證明股市唔係平時咁穩定，好多時會出現一次過好誇張大升／大跌，大部分日子冇乜野，一爆就癲哂。
+- 兩隻科技股雖然Annualized Return高好多（分別係49%同84%）但係Annualized Vol都好大（兩隻股票分別41%、65%，而大市S&P500得18%，NASDAQ都只係23%）。
+  - 代表閒閒地都經常一日上落一兩個 Percent。  
+- Skewness全部 Positive，代表拉上補下，多咗一啲贏嘅日子，喺2025下半年科技股狂升嘛。不過呢啲 Positive Skew唔係咁常見，因為正常市場數字一般都係接近零或Slightly Negative。
+- Kurtosis全部都係極誇張，尤其S&P 500/NASDAQ（20以上），證明股市唔係平時咁穩定，好多時會出現一次過好誇張大升／大跌，一爆就癲哂。
 
 
 """)

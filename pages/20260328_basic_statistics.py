@@ -83,7 +83,12 @@ st.markdown(r"""
 
 呢樣嘢Exactly就係上面講嘅Blackbox：我地可以估下嚟緊回報有幾多，有個大槪嘅Idea，但係究竟入面詳細每一樣嘢係點樣運作其實係冇可能知道哂。
 
-作為Raw Data Point， 以下有兩隻股票嘅Daily Close Price ($$ P_t $$ : Price At Time $$ t $$)：
+
+##### Raw Data: 以下四樣嘢喺 2025 至 2026 嘅Daily Close Price ($$ P_t $$ : Price At Time $$ t $$)：
+
+- 兩隻美國科技股
+- S&P 500 Index (代表美國整體市場表現)
+- NASDAQ Composite Index (代表科技股整體表現)
 
 """)
 
@@ -182,23 +187,11 @@ fig2.update_layout(height=500, title_text=r"Daily Returns Histograms", showlegen
 
 # Display the Combined Plot
 st.plotly_chart(fig1, width="content")
-# st.components.v1.html(fig1.to_html(include_mathjax='cdn'), height=300)
 
 st.markdown(r"""
 
 好多時喺Finance嘅世界係比較少直接用Price去計啲Statistics，主要原因係做唔到股票之間嘅比較。
 例如一隻五蚊升咗五毫，另一隻百幾蚊升咗十蚊，個Price唔喺同一個scale係冇得比較。但係個Return $$ R_t $$ (升咗幾多percent)就可以比較喇。
-
-<div style="border: 2px solid #ddd; border-radius: 5px; padding: 15px; background-color: #f9f9f9;">
-
-**同埋仲有一樣非常重要嘅假設：下一日嘅 Return $$ R_{t+1} $$ 同今日嘅 Return $$ R_t $$ 係i.i.d.(Independent and Identically Distributed)，唔係就要做埋Time Series Analysis。**
-- 意思係今日嘅升跌其實唔影響聽日嘅升跌，唔可以即係用今日嘅Return去估計聽日嘅Return
-- 個Blackbox 入面（睇唔到）嘅特性係一直都唔會改變 
-
-呢樣假設喺股票數據分析入面係一個經常用嘅簡化。 雖然有人會覺得好似唔Make Sense，特別係有時個市短期內某啲股票可能會有 Momentum（不停爆升/跌）或者 Mean Reversion（升跌得太多會回返落嚟同靜返）。
-但喺大部分情況下，為咗處理大量嘅股票資料，假設 i.i.d. 係一個合理嘅平衡。
-
-</div>
 
 首先我哋要由Daily Close Price 轉做 Simple Daily Return (又稱Arithmetic Return)：
 
@@ -215,9 +208,22 @@ st.latex(r"""
 
 st.markdown(r"""
 
+<div style="border: 2px solid #ddd; border-radius: 5px; padding: 15px; background-color: #f9f9f9;">
+
+**同埋仲有一樣非常重要嘅假設：下一日嘅 Return $$ R_{t+1} $$ 同今日嘅 Return $$ R_t $$ 係i.i.d.(Independent and Identically Distributed)，唔係就要做埋Time Series Analysis。**
+- 意思係今日嘅升跌其實唔影響聽日嘅升跌，唔可以即係用今日嘅Return去估計聽日嘅Return
+- 個Blackbox 入面（睇唔到）嘅特性係一直都唔會改變 
+
+呢樣假設喺股票數據分析入面係一個經常用嘅簡化。 雖然有人會覺得好似唔Make Sense，特別係有時個市短期內某啲股票可能會有 Momentum（不停爆升/跌）或者 Mean Reversion（升跌得太多會回返落嚟同靜返）。
+但喺大部分情況下，為咗處理大量嘅股票資料，假設 i.i.d. 係一個合理嘅平衡。
+
+</div>
+
+
+
 然後將啲 Data Points ($$ R_t $$) Plot 做 Histogram 睇下個樣大槪係點。
 
-""")
+""", unsafe_allow_html=True)
 
 st.plotly_chart(fig2, width="content")
 
@@ -352,11 +358,15 @@ with st.expander("Formula", expanded=False):
 
     啲stat嘅formula 真係樣衰到呢…………唉…… 
 
-    Concept：
+    ###### Concept：
     
     - 左邊Definition個 $$ R $$ 係一個 Random Variable，係一個Black Box，我地永遠都唔會知佢Exactly係點運作。
     
-    - 右邊Estimator嘅 $$ R_i : i = 1, 2, 3 \ldots n $$ 係一堆 Sample Data Points，我地係用右邊嘅Formula 去估左邊嗰條數。
+    - 右邊Estimator嘅 $$ R_i : i = 1, 2, 3 \ldots n $$ 係一堆 Sample Data Points、一堆 Observations。
+    
+    - 左邊啲 Moments 例如 $$ \mu, \sigma^2, \kappa $$ 等，全部永遠都唔知真實數字係乜，都係理論上一啲 Definition。
+    
+    - 右邊嘅 Estimator 例如 $$ \bar{R}, s^2, K $$ 等，佢哋係根據 Samples 用 Formula 計出嚟嘅一個估值，如果 Sample Size 夠大 (通常都當佢夠)，佢哋就會接近左邊嘅理論數值。
 
 
     |  | Definition | Estimator |
@@ -375,14 +385,22 @@ with st.expander("Formula", expanded=False):
     
     - 好多時講Return 我地都會講Volatility (波幅)，其實即係 Standard Deviation (Variance Square Root)。
     
-    - 而Mean / Variance / Volatility 我地會做一個Annualized 嘅轉換：
-      - Mean 乘 $$ 252 $$ (假設一年252 個 trading days)
-      - Variance 都係乘 $$ 252 $$
-      - Volatility 乘 $$ \sqrt{252} $$
-
-    - 通常喺Finance 嘅世界，一般都係講Excess Kurtosis (i.e. Kurtosis - 3)。
     
-    - 因為Normal Distribution 嘅 Kurtosis 係 3，槪念係講緊究竟啲Data 肥過Normal多。Excess Kurtosis 將佢Normalize返去0，正數就代表佢肥過Normal， 不過Excess Kurtosis唔係一個Moment。
+    - Mean / Variance / Volatility 我地會做一個Annualized 嘅轉換：
+    
+      - Mean 乘 $$ 252 $$ (假設一年252 個 trading days)
+      
+      - Variance 都係乘 $$ 252 $$
+      
+      - Volatility 乘 $$ \sqrt{252} $$
+      
+      - Skewness 同 Kurtosis 就唔會轉換。
+      
+    - 通常喺Finance 嘅世界，一般都係講Excess Kurtosis (將 Kurtosis - 3)。
+    
+      - 因為Normal Distribution 嘅 Kurtosis 係 3，槪念係講緊究竟啲Data 肥過Normal多。
+      
+      - Excess Kurtosis 將佢Normalize返去0，正數就代表佢肥過Normal， 不過Excess Kurtosis唔係一個Moment。
 
     """)
 
@@ -412,9 +430,8 @@ ccmp_sample_kurtosis = kurtosis(ccmp_daily_return, fisher=True, bias=False)
 
 st.markdown(r"""
 
-##### 上面嗰兩隻Stock 1 同 Stock 2 其實都係兩隻美國嘅科技龍頭股，S&P 500 代表美國般市場表現，而NASDAQ Composite 就代表科技股普遍嘅表現
+##### 我地可以計一計上面堆嘢嘅Stats
 
-我地可以計一計佢哋嘅Stats：
 
 """)
 
@@ -433,10 +450,17 @@ st.markdown(r"""
 
 ##### 數字可以試下咁樣 interpret
 
-- 兩隻科技股雖然Annualized Return高好多（分別係49%同84%）但係Annualized Vol都好大（兩隻股票分別41%、65%，而大市S&P500得18%，NASDAQ都只係23%）。
-  - 代表閒閒地都經常一日上落一兩個 Percent。  
-- Skewness全部 Positive，代表拉上補下，多咗一啲贏嘅日子，喺2025下半年科技股狂升嘛。不過呢啲 Positive Skew唔係咁常見，因為正常市場數字一般都係接近零或Slightly Negative。
-- Kurtosis全部都係極誇張，尤其S&P 500/NASDAQ（20以上），證明股市唔係平時咁穩定，好多時會出現一次過好誇張大升／大跌，一爆就癲哂。
+- 兩隻科技股雖然Annualized Return高好多（分別係49%同84%）但係Annualized Vol都好大（兩隻股票分別41%、65%，而大市 S&P 得18%，NASDAQ 都只係23%）。
+
+  - 代表閒閒地都經常一日上落一兩個 Percent。
+
+- Skewness全部 Positive，代表拉上補下，多咗一啲贏嘅日子，喺2025下半年科技股狂升嘛。
+
+  - 不過呢啲 Positive Skew唔係咁常見，正常一般都係接近零或Slightly Negative。
+  
+  - 因為人就係咁樣，有大災難就大家都爭住走佬，所以會越跌越多，但係有好消息呢，就未必全部人一齊爭住買，所以 Slightly Negative Skew 係比較常見。
+
+- Kurtosis全部都係極誇張，尤其S&P 同 NASDAQ（20以上），證明股市唔係平時咁穩定，好多時會出現一次過大升／大跌，一爆就癲哂。
 
 
 """)
@@ -446,6 +470,6 @@ st.markdown(r"""
 
 #### 總結一下：
 
-上面嗰幾點聽落可能好廢，其實可能就咁睇下個圖或者留意下新聞都會有個大概嘅印象，但係用Normalized 左嘅數字嚟睇就可以客觀咁比較，同埋可以用電腦大規模將幾千隻股票一次過計哂 Save 落 Database，跟住就可以有系統咁做 Optimization 同砌一啲 Strategy 出嚟。 
+上面嗰幾點聽落可能好廢，可能就咁睇下個圖或者留意下新聞都會有個大概嘅印象，但係用Normalized 左嘅數字嚟睇就可以客觀咁比較，同埋可以用電腦大規模將幾千隻股票一次過計哂 Save 落 Database，跟住就可以有系統咁做 Optimization 同砌一啲 Strategy 出嚟。 
 
 """)

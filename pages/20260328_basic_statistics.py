@@ -446,7 +446,7 @@ st.markdown(r"""
 """)
 
 st.markdown(f"""
-    | | Stock 1 | Stock 2 | S&P 500 | NASDAQ Composite |
+    | | Stock 1 | Stock 2 | S&P | NASDAQ |
     |:---|---:|---:|---:|---:|
     |Mean (Annualized)| $$ {stock1_sample_mean * 252.0:.4f} $$ | $$ {stock2_sample_mean * 252.0:.4f} $$ | $$ {spx_sample_mean * 252.0:.4f} $$ | $$ {ccmp_sample_mean * 252.0:.4f} $$ |
     |Volatility (Annualized)| $$ {stock1_sample_volatility * np.sqrt(252.0):.4f} $$ | $$ {stock2_sample_volatility * np.sqrt(252.0):.4f} $$ | $$ {spx_sample_volatility * np.sqrt(252.0):.4f}  $$ | $$ {ccmp_sample_volatility * np.sqrt(252.0):.4f} $$ |

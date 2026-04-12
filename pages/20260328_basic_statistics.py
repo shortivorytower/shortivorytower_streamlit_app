@@ -276,19 +276,19 @@ with st.expander("做個簡單Simulation就可以Feel 到乜嘢係Moments", expa
     if use_desktop:
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            target_mean = st.slider("Mean", -0.50, 0.5, 0.02)
+            target_mean = st.slider("Mean", -0.50, 0.5, 0.4)
         with col2:
-            target_variance = st.slider("Variance", 0.01, 0.09, 0.01)
+            target_variance = st.slider("Variance", 0.01, 0.09, 0.08)
         with col3:
-            target_skewness = st.slider("Skewness", -2.5, 2.5, 0.1)
+            target_skewness = st.slider("Skewness", -2.5, 2.5, -2.0)
         with col4:
-            target_kurtosis = st.slider("Excess Kurtosis", 0.01, 5.0, 0.01)
+            target_kurtosis = st.slider("Excess Kurtosis", 0.01, 5.0, 4.5)
     else:  # Mobile or width not yet detected - vertical stack
         st.markdown(r"###### Parameters")
-        target_mean = st.slider("Mean", -0.50, 0.5, 0.02)
-        target_variance = st.slider("Variance", 0.01, 0.09, 0.01)
-        target_skewness = st.slider("Skewness", -2.5, 2.5, 0.1)
-        target_kurtosis = st.slider("Excess Kurtosis", 0.01, 5.0, 0.01)
+        target_mean = st.slider("Mean", -0.50, 0.5, 0.4)
+        target_variance = st.slider("Variance", 0.01, 0.09, 0.08)
+        target_skewness = st.slider("Skewness", -2.5, 2.5, -2.0)
+        target_kurtosis = st.slider("Excess Kurtosis", 0.01, 5.0, 4.5)
 
     # hardcoded parameters
     samples_count = 20000

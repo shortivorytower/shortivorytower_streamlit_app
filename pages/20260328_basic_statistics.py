@@ -222,10 +222,10 @@ st.markdown(r"""
 **同埋仲有一樣實戰重要事項**
 
 計數之前啲 Closing Price 一定要做 Corporate Action Adjustment
-- 例如股票尋日Close at 100蚊，今日Ex-Div 5 毫，收市係 101蚊，個 Daily Return 唔係 $$ \frac{101}{100}-1 = 0.01 $$ 而係　$$ \frac{101.5}{100} -1 = 0.015 $$
-- Systematic 咁做係要計一個Backward Adjustment Factor $$ \frac{1}{1+\frac{0.5}{101}} $$ 再將尋日、前日、大前日…… 全部Ex Div以前嘅Close Price都要乘返個 Factor 入去。 
-
-Adjust 咗嘅 Daily Return 係 $$ \frac{101}{100(\frac{1}{1+\frac{0.5}{101}})} - 1 = 0.015 $$
+- 例如股票尋日Close at 100蚊，今日Ex-Div 5 毫，收市係 101蚊，個 Daily Return 唔係 $$ \frac{101}{100}-1 = 0.01 $$ 
+  - 就咁common sense 係　$$ \frac{101 + 0.5}{100} -1 = 0.015 $$
+- Systematic 咁做係要計一個Backward Adjustment Factor $$ \frac{1}{1+\frac{0.5}{101}} $$ 再將尋日、前日、大前日…… 全部Ex Div以前嘅Close Price都要乘返個 Factor 入去咁就可以大規模咁做。 
+  - Adjust 咗嘅 Daily Return 係 $$ \frac{101}{100(\frac{1}{1+\frac{0.5}{101}})} - 1 = 0.015 $$
 
 </div>
 
@@ -480,6 +480,6 @@ st.markdown(r"""
 
 #### 總結一下：
 
-上面嗰幾點聽落可能好廢，可能就咁睇下個圖或者留意下新聞都會有個大概嘅印象，但係用Normalized 左嘅數字嚟睇就可以客觀咁比較，同埋可以用電腦大規模將幾千隻股票一次過計哂 Save 落 Database，跟住就可以有系統咁做 Optimization 同砌一啲 Strategy 出嚟。 
+上面嗰幾點聽落可能好廢，可能就咁睇下個圖或者留意下新聞都會有個大概嘅印象，但係用Normalized 左嘅數字嚟睇就可以客觀咁比較，同埋可以用電腦一次過將幾千隻股票計哂 Save 落 Database，跟住就可以有系統咁做 Optimization 同砌一啲 Strategy 出嚟。 
 
 """)

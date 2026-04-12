@@ -478,7 +478,7 @@ st.markdown(r"""
 
 st.markdown(r"""
 
-#### 總結一下：
+#### 總結
 
 上面嗰幾點聽落可能好廢，可能就咁睇下個圖或者留意下新聞都會有個大概嘅印象，但係用Normalized 左嘅數字嚟睇就可以客觀咁比較，同埋可以用電腦一次過將幾千隻股票計哂 Save 落 Database，跟住就可以有系統咁做 Optimization 同砌一啲 Strategy 出嚟。 
 

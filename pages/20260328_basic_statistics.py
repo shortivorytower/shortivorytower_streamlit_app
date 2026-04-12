@@ -193,7 +193,9 @@ st.markdown(r"""
 好多時喺Finance嘅世界係比較少直接用Price去計啲Statistics，主要原因係做唔到股票之間嘅比較。
 例如一隻五蚊升咗五毫，另一隻百幾蚊升咗十蚊，個Price唔喺同一個scale係冇得比較。但係個Return $$ R_t $$ (升咗幾多percent)就可以比較喇。
 
-首先我哋要由Daily Close Price 轉做 Simple Daily Return (又稱Arithmetic Return)：
+首先我哋要由Daily Close Price 轉做 Simple Daily Return (又稱Arithmetic Return)
+
+然後將啲 Data Points ($$ R_t $$) Plot 做 Histogram 睇下個樣大槪係點。
 
 (Sidetrack：仲有其他相關嘅嘢例如Geometric Return同Log Return…)
 
@@ -210,18 +212,26 @@ st.markdown(r"""
 
 <div style="border: 2px solid #ddd; border-radius: 5px; padding: 15px; background-color: #f9f9f9;">
 
-**同埋仲有一樣非常重要嘅假設：下一日嘅 Return $$ R_{t+1} $$ 同今日嘅 Return $$ R_t $$ 係i.i.d.(Independent and Identically Distributed)，唔係就要做埋Time Series Analysis。**
+**一樣非常重要嘅假設：下一日嘅 Return $$ R_{t+1} $$ 同今日嘅 Return $$ R_t $$ 係i.i.d.(Independent and Identically Distributed)，唔係就要做埋Time Series Analysis。**
 - 意思係今日嘅升跌其實唔影響聽日嘅升跌，唔可以即係用今日嘅Return去估計聽日嘅Return
 - 個Blackbox 入面（睇唔到）嘅特性係一直都唔會改變 
 
 呢樣假設喺股票數據分析入面係一個經常用嘅簡化。 雖然有人會覺得好似唔Make Sense，特別係有時個市短期內某啲股票可能會有 Momentum（不停爆升/跌）或者 Mean Reversion（升跌得太多會回返落嚟同靜返）。
 但喺大部分情況下，為咗處理大量嘅股票資料，假設 i.i.d. 係一個合理嘅平衡。
 
+**同埋仲有一樣實戰重要事項**
+
+計數之前啲 Closing Price 一定要做 Corporate Action Adjustment
+- 例如股票尋日Close at 100蚊，今日Ex-Div 5 毫，收市係 101蚊，個 Daily Return 唔係 $$ \frac{101}{100}-1 = 0.01 $$ 而係　$$ \frac{101.5}{100} -1 = 0.015 $$
+- Systematic 咁做係要計一個Backward Adjustment Factor $$ \frac{1}{1+\frac{0.5}{101}} $$ 再將尋日、前日、大前日…… 全部Ex Div以前嘅Close Price都要乘返個 Factor 入去。 
+
+Adjust 咗嘅 Daily Return 係 $$ \frac{101}{100(\frac{1}{1+\frac{0.5}{101}})} - 1 = 0.015 $$
+
 </div>
 
 
 
-然後將啲 Data Points ($$ R_t $$) Plot 做 Histogram 睇下個樣大槪係點。
+
 
 """, unsafe_allow_html=True)
 

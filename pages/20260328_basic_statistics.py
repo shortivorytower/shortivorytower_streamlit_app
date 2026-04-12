@@ -408,9 +408,9 @@ with st.expander("Formula", expanded=False):
       
     - 通常喺Finance 嘅世界，一般都係講Excess Kurtosis (將 Kurtosis - 3)。
     
-      - 因為Normal Distribution 嘅 Kurtosis 係 3，槪念係講緊究竟啲Data 肥過Normal多。
+      - 因為Normal Distribution 嘅 Kurtosis 係 3，槪念係講緊究竟啲Data 肥過Normal幾多。
       
-      - Excess Kurtosis 將佢Normalize返去0，正數就代表佢肥過Normal， 不過Excess Kurtosis唔係一個Moment。
+      - Excess Kurtosis 將佢Normalize返去0，正數就代表佢肥過Normal多啲極端風險， 不過Excess Kurtosis唔係一個Moment。
 
     """)
 
